@@ -1,0 +1,1 @@
+<footer class="footer text-center"> 2019 &copy; Desenvolvido por Juliana Maciel </footer>
