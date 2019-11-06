@@ -1,4 +1,4 @@
-# analisaDados
+# Analisa Dados
 TRABALHO DESENVOLVIDO PARA CONCLUSÃO DE CURSO - BACHARELADO EM SISTEMAS DE INFORMAÇÃO
 Desenvolvimento de um dispositivo de baixo custo para levantamento de dados de potencial eólico de uma dada região
 Juliana O. Maciel¹, Filippe C. Jabour², Diana Esther T. de Barci³
