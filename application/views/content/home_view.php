@@ -49,7 +49,8 @@
                         </div>
                     </div>
                     </form>
-                <div id="chart_div" style="width: 100%; height: 500px;"></div>
+                    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+                    <div id="chart_div2" style="width: 100%; height: 500px;"></div>
             </div> 
         </div> 
     </div> 
@@ -61,95 +62,48 @@
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     var datas= [
-            ['Data', 'Umidade', 'Temperatura','Temperatura_2'],
-            <?php 
-                foreach ($params["dados"] as $key) {
-                    echo("['". date_format(date_create($key["Data"]),"d/m/y - H:i")  ."',". $key["Umidade"] .",". $key["Temperatura"] .",". $key["Temperatura_2"] ."],\n");
-                }
-                
-            ?>
-        ];
-        console.log(datas)
+        ['Data', 'Umidade', 'Temperatura','Temperatura_2', 'Velocidade do vento'],
+        <?php 
+            foreach ($params["dados"] as $key) {
+                echo("['". date_format(date_create($key["Data"]),"d/m/y - H:i")  ."',". $key["Umidade"] .",". $key["Temperatura"] .",". $key["Temperatura_2"] .",". $key["anemometro"] ."],\n");
+            }
+            
+        ?>
+    ]; 
     function drawChart() {
         var data = google.visualization.arrayToDataTable(datas);
-
         var options = {
             title: '',
             hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
             vAxis: {minValue: 0}
         };
-
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
     }
-</script>
 
-
-<script> 
-function drawChart2(datas) {
-    var data = google.visualization.arrayToDataTable([
-        
-        datas
-    ]);
-
-    var options = {
-        title: '',
-        hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
-        vAxis: {minValue: 0}
-    };
-
-    var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
-}
-window.addEventListener("load", function(event) {
-    function formateData(data = null, verificador= false){
-        if(data === null) return;
-        var dados =  data.split(' ');
-         
-        hora  =  dados[1].split(":");
-        dados =  dados[0].split('-')
-        return dados[2] + "/" + dados[1] +"/"+dados[0] + " - " + hora[0]+":"+hora[1]
-         
-    }
-    $(".forms").submit(function(e){  
-       
-       //filtroTabela
-       $.ajax({
-            url: '/home/filtroTabela',
-            type: 'POST',
-            async:false,
-            data: {
-                dataIni: $("#dataIni").val(),
-                dataFim: $("#datafim").val(),
-                idLocal:  $("#idLocal").val()
-            },
-            success: function(res){  
-                var datas=[];
-                res = JSON.parse(res)
-                datas.push(['Data', 'Umidade', 'Temperatura','Temperatura_2'])
-                res.forEach(element => { 
-                    datas.push([
-                        formateData(element.Data),
-                        parseFloat(element.Umidade),
-                        parseFloat(element.Temperatura),
-                        parseFloat(element.Temperatura_2)
-                    ])
-                } );
-                
-                var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-                var options = {
-                    title: '',
-                    hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
-                    vAxis: {minValue: 0}
-                };
-                var data = google.visualization.arrayToDataTable(datas);
-                chart.draw(data, options);
+     
+    google.charts.setOnLoadCallback(drawChart2);
+    var datas2= [
+        ['Data', 'Temperatura', 'Velocidade do vento'],
+        <?php 
+            foreach ($params["dados"] as $key) {
+                echo("['". date_format(date_create($key["Data"]),"d/m/y - H:i")  ."',". $key["Temperatura"] .",". $key["anemometro"] ."],\n");
             }
-       })
-         e.preventDefault()
-        
-    })
-
-});
+            
+        ?>
+    ]; 
+    function drawChart2() {
+        var data = google.visualization.arrayToDataTable(datas2 );
+        var options = {
+            title: '',
+            hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
+            vAxis: {minValue: 0}
+        };
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div2'));
+        chart.draw(data, options);
+    }
 
 </script>
+
+
+<script src="/assets/js/dash.js"></script>

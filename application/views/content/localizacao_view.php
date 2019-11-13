@@ -25,12 +25,12 @@
                             <th scope="col">Latitude</th>
                             <th scope="col">Observacao</th>
                             <th scope="col">Altura</th>
+                            <th scope="col">Ação</th>
 
-                            <!--<th scope="col">Velocidade do vento</th>-->
                         </tr>
                     </thead>
                     <tbody>
-                        <?php  foreach ($params["municipio"] as $key) { 
+                        <?php  foreach ($params["municipio"] as $key) {  
                             print("<tr>");
                             print("<th scope='row'>".$key["endereco"]."</th>");
                             print("<th scope='row'>".$key["cidade"]."</th>"); 
@@ -40,6 +40,7 @@
                             print("<th scope='row'>".$key["latitude"]."</th>"); 
                             print("<th scope='row'>".$key["observacao"]."</th>"); 
                             print("<th scope='row'>".$key["altura"]."</th>"); 
+                            print('<th scope="row"><button type="button" data-id="'.$key["idLocal"].'" class="btn btn-danger deletarMunicipio">Deletar</button></th>'); 
                             print("</tr>");
                         }?>
                     </tbody>
@@ -94,41 +95,4 @@ label {
 }
 </style>
  
-<script>
-window.addEventListener("load", function(event) {
-
-    $("#datasssnovo").click(function(){
-        if($("#sadasd").css("display") == "block"){
-            $("#sadasd").css("display","none")
-        }
-        else{
-            $("#sadasd").css("display","block")
-        }
-    })
-    $("#formulario").submit(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/home/localizacoes',
-            type: 'POST',
-            data: {
-                cidade : $("#cidade").val(),
-                estado : $("#estado").val(),
-                pais : $("#pais").val(),
-                endereco : $("#endereco").val(),
-                longitude : $("#longitude").val(),
-                latitude : $("#latitude").val(),
-                observacao : $("#observacao").val(),
-                altura : $("#altura").val()
-            },
-            success: function(res){ 
-                console.log(res)
-                alert("Dados salvo com sucesso!");
-            },
-            error:function(e){ 
-                console.log('ERROR',e)
-            }
-        }) 
-    })
-
-})
-</script>
+<script src="/assets/js/localizacao.js"></script>

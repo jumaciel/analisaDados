@@ -13,18 +13,8 @@ class base_model extends CI_Model {
 		return $data[2] . "-" . $data[1] . "-" . $data[0] . " ".$hora;
     } 
     
-    public function migracao(){
+   public function migracao(){
         $dados = array();
-		if ($file = fopen(BASEPATH."/../MIGRAR/datalogger.txt", "r")) {
-		   while(!feof($file)) {
-			   $line = fgets($file); 
-			   $arr = explode("~#~", $line);
-			   if($arr[0] != null){
-				   array_push($dados, $arr);
-			   } 
-		   }
-		   fclose($file);
-	   	}
    
 		foreach($dados as $key){  
 			$array = array( 
@@ -32,7 +22,8 @@ class base_model extends CI_Model {
 				"Temperatura_2" =>  $key[2],
 				"Umidade" => $key[0],
 				"Data" => $this->relpace_data($key[3], $key[4]), 
-				"idLocal" => $key[5]
+				"anemometro" => $key[5],
+				"idLocal" => $key[6]
 			);
 			$this->db->insert('dados',$array);
         }
@@ -41,8 +32,21 @@ class base_model extends CI_Model {
     }
 
 
+	public function apagar_dados($id){
+		$this->db->query("DELETE FROM `dados` WHERE `idLocal` = ".$id);
+		if($this->db->query("DELETE FROM `local` WHERE `local`.`idLocal` = ".$id)){
+			return array("status" =>"sucess");	
+		}else{
+			return array("status" =>"error");
+		}
+	}
+
     public function pega_dados(){
-        return $this->db->get_where('dados', array("idLocal"=>1))->result_array();
+		$arr = $this->db->get("local")->result_array();
+		if(count($arr) > 0){
+			return $this->db->get_where('dados', array("idLocal"=>$arr[0]["idLocal"]))->result_array();
+		}
+		return array();
 	}
 	
 
@@ -58,7 +62,8 @@ class base_model extends CI_Model {
 				"Temperatura_2" =>  $key[2],
 				"Umidade" => $key[0],
 				"Data" => $this->relpace_data($key[3], $key[4]), 
-				"idLocal" => $key[5]
+				"anemometro" => $key[5],
+				"idLocal" => $key[6]
 			);
 			$this->db->insert('dados',$array);
         }

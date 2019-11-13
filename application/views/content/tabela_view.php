@@ -53,23 +53,25 @@
                     </form>
                  <table class="table">
                     <thead>
-                        <tr>
+                        <tr id="tabela">
                             <th scope="col">Data</th>
                             <th scope="col">Hora</th>
-                            <th scope="col">Temperaturas (Cº)</th>
+                            <th scope="col">Temperatura (Cº)</th>
+                            <th scope="col">Temperatura (Cº)</th>
                             <th scope="col">UR do ar(%)</th>
-                            <!--<th scope="col">Velocidade do vento</th>-->
+                            <th scope="col">Velocidade do vento</th>
                         </tr>
                     </thead>
                     <tbody id="tabela">
                         <?php foreach($params["dados"] as $key){
                             $date = new DateTime($key["Data"]);
-                            print("<tr>");
+                            print("<tr id ='tabela'>");
                             print("<th scope='row'>".$date->format('d/m/Y')."</th>");
                             print("<th scope='row'>".$date->format('H:i:s')."</th>");
-                            print("<th>".$key["Temperatura"]."º - ". $key["Temperatura_2"] ."º</th>");
+                            print("<th>".$key["Temperatura"]."º</th>");
+                            print("<th>".$key["Temperatura_2"]."º</th>");
                             print("<th>".$key["Umidade"]."%</th>");
-                            //print("<th>".$key["anemometro"]."</th>"); 
+                            print("<th>".$key["anemometro"]." m/s</th>"); 
                             print("</tr>");
                         }?>
                     </tbody>
@@ -112,8 +114,10 @@ window.addEventListener("load", function(event) {
                     html += ` <tr>
                             <th scope='row'>${formateData(element.Data)}</th>
                             <th scope='row'>${formateData(element.Data,true)}</th>
-                            <th>${element.Temperatura}º - ${element.Temperatura_2}º</th>
+                            <th>${element.Temperatura}º </th>
+                            <th>${element.Temperatura_2}º</th>
                             <th>${element.Umidade}%</th>
+                            <th>${element.anemometro}m/s</th>
                         </tr> ` ;
                         console.log(html)
                 });
